@@ -1,0 +1,344 @@
+# Session 3: Data analysis
+
+-   Looking at your data
+
+-   Building your analysis dataset
+
+-   Answering questions with data
+
+-   Missing data
+
+-   Grouping and pivoting data
+
+-   Filtering data
+
+## Looking at your data
+
+Section from Epidemiologist R handbook- [17 Descriptive Tables](https://epirhandbook.com/descriptive-tables.html)
+
+There are many functions available to look at descriptive statistics from your dataset. For this example we will use a function that is included in the basic installation of R.
+
+```{r}
+summary(africa_covid_cases_long)
+```
+
+This function provides useful information which we can use for building our approach to designing an analysis workflow.
+
+For example, we can see from the summary of the date variable that the first record (`Min`) is from 2020-01-01 and the last record (`Max`) is from 2021-05-03,
+
+For the cases variable, the maximum number of cases recorded on one day was 6,195.
+
+## Building an analysis dataset
+
+Before analysing the data, it is a good idea to generate a new dataset which only contains the variables you need to analyse.
+
+So what variables do we have in *`africa_covid_cases_long`*
+
+```{r}
+names(africa_covid_cases_long)
+```
+
+We can select the variables we want to keep using the select function from the dplyr package
+
+`dplyr` is a core part of the `tidyverse` so it is loaded when you write `library(tidyverse)`
+
+```{r}
+analysis_dataset <- africa_covid_cases_long %>% 
+  select(date_format,AFRICAN_REGION, COUNTRY_NAME, cases)
+```
+
+We can look at the first few rows of the dataset we have created to check we have selected the desired variables.
+
+```{r}
+head(analysis_dataset)
+```
+
+The `select` function from the `dplyr` package is very useful.
+
+It can also be used to rename selected variables
+
+```{r}
+analysis_dataset <- africa_covid_cases_long %>% 
+  select(date=date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases)
+```
+
+We have renamed `AFRICAN_REGION` and `COUNTRY_NAME` as `region` and `country`
+
+```{r}
+head(analysis_dataset)
+```
+
+## Answering questions with data
+
+The Epidemiologist R handbook has several comprehensive sections focusing on data analysis. We will continue to work with the dataset we have built while applying some of the examples from the handbook.
+
+So far we have:
+
+-   Imported the data from an Excel worksheet
+
+-   Reshaped the data into a "tidy" format
+
+-   Changed the format of a variable to a date
+
+-   Selected only the variables we want to use for the analysis
+
+Now we can start to use the dataset to answer questions
+
+The `dplyr` package contains many useful functions for analysing data.
+
+Some of these functions are covered in the Epidemiologist R Handbook - [Section 17.4](https://epirhandbook.com/descriptive-tables.html#dplyr-package)
+
+We will use some of these functions to answer questions using our dataset.
+
+*How many confirmed cases of COVID-19 have been recorded in Africa?*
+
+```{r}
+analysis_dataset %>%  # Tell R what dataset we want to use
+    summarise(total_covid_cases=sum(cases))  #Tell R what function we want to apply to the data
+
+```
+
+The answer is "NA", which stands for "Not Available"
+
+This is a good example of how R deals with missing data
+
+-   There may be dates in our dataset where there were no confirmed cases of COVID-19 recorded
+
+-   When data are missing, R will display "NA" for the variable
+
+-   If you try to run a calculation on data where there is one or more "NA" values, the results will be "NA"
+
+## Missing data
+
+There are several options for dealing with missing values in R including imputation and other statistical techniques which will not be discussed here. For this section we will discuss the 2 most straightforward options but when building a graph, table or report it is very important to report how missing data were handled. 
+
+1.  Complete case analysis
+
+    -   Remove rows with any missing data
+
+```{r}
+full_dataset <- na.omit(analysis_dataset)
+```
+
+2.  Exclude "NA" values from calculations
+
+    -   Add an additional argument to the function to remove any record with "NA" in the variable "cases"
+
+```{r}
+total_covid_cases <- analysis_dataset %>% 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE))
+total_covid_cases
+```
+
+This command has now excluded NA values and has provided us with an answer for the number of confirmed COVID-19 cases in Africa - `r total_covid_cases`
+
+## Grouping and pivoting data
+
+`group_by` is a very powerful function for summarising data. You can instruct R to recognise specific groups in your data. Functions can then be applied to these groups providing you with additional information. 
+
+
+*How many confirmed cases of COVID-19 have been recorded in Africa, by region?*
+
+```{r}
+total_covid_cases_region <- analysis_dataset %>% 
+  group_by(region) %>% 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE))
+```
+
+
+
+The `arrange` function can be used to organise the results. In this case we have instructed R to sort the results by the `total_covid_cases` variable, from highest to lowest value.
+
+```{r}
+analysis_dataset %>% 
+  group_by(region) %>% 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
+  arrange(-total_covid_cases)
+```
+
+We can add multiple variables to `group_by`
+
+If we add region and country to the group_by command, sort from highest to lowest, we can see which countries reported the most confirmed COVID-19 cases
+
+```{r}
+analysis_dataset %>% 
+  group_by(region, country) %>% 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
+  arrange(-total_covid_cases)
+```
+
+## Filtering data
+
+Another useful function is `filter` which can be used to apply filters to calculations
+
+We can repeat the previous calculation, but then add a filter to only include results from countries in Northern Africa
+
+```{r}
+analysis_dataset %>% 
+  group_by(region, country) %>% 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
+  arrange(-total_covid_cases) %>% 
+  filter(region=="Northern Africa")
+```
+
+The filter can be applied at any point within the calculation. For very complex calculations, it is helpful to apply the filter as early as possible. This reduces the number of records before the complex portion of the calculation occurs.
+
+`filter` can also be used to make data frames
+
+```{r}
+northern_africa <- analysis_dataset %>% 
+  filter(region=="Northern Africa")
+```
+
+Using filters, we can answer additional questions.
+
+What percentage of North Africa's confirmed COVID-19 cases were recorded in each country in North Africa?
+
+```{r}
+#to convert the calculation to percentage we will need to install an additional package
+#install.packages("scales")
+
+northern_africa %>% 
+  group_by(country) %>% 
+  summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
+  mutate(percentage=scales::percent(total_covid_cases/sum(total_covid_cases))) %>% 
+  #with this mutate command we are telling r to divide the total number of covid cases for each country by the total number of covid cases for all countries in northern africa
+  arrange(-total_covid_cases)  
+
+```
+
+We can store the result as a data frame by assigning the calculation to an object.
+
+```{r}
+northern_africa_cases_country <- northern_africa %>% 
+  group_by(country) %>% 
+  summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
+  mutate(percentage=scales::percent(total_covid_cases/sum(total_covid_cases))) %>% 
+  #with this mutate command we are telling r to divide the total number of covid cases for each country by the total number of covid cases for all countries in northern africa
+  arrange(-total_covid_cases)  
+```
+
+## Additional questions and workflows
+
+### *When was the first confirmed case of COVID-19 in Northern Africa?*
+
+```{r}
+first_cases_northern_africa <- northern_africa %>% 
+  filter(cases>0) %>% 
+  filter(date == min(date, na.rm=TRUE)) 
+first_cases_northern_africa
+```
+
+Here we have added 2 filters:
+
+1.  Only keep records where the value for `cases` is higher than 0
+
+2.  Only keep records where the value for `date` is equal to the minimum value for `date.` We have also added the `na.rm=TRUE` command from a previous step. If you don't know the data very well, it is good practice to add this command.
+
+When was the first confirmed case of COVID-19 in Northern Africa, by country?
+
+```{r}
+first_case_northern_africa_country <- northern_africa %>% 
+  group_by(country) %>% 
+  filter(cases>0) %>% 
+  filter(date == min(date, na.rm=TRUE)) 
+first_case_northern_africa_country
+```
+
+The filter function can also be used to exclude certain records from the analysis
+
+```{r}
+first_case_northern_africa_country_exclude_tunisia <- northern_africa %>% 
+  group_by(country) %>% 
+  filter(cases>0) %>% 
+  filter(date == min(date, na.rm=TRUE)) %>% 
+  #filter(!country=="Tunisia") %>% 
+  filter(country!="Tunisia") #both methods for excluding results (in this case excluding results where the value for country is Tunisia) can be used 
+first_case_northern_africa_country_exclude_tunisia
+```
+
+On what date, was the 100th case of COVID-19 reported from each country in Northern Africa?
+
+```{r}
+first_cases_northern_africa_data <- northern_africa %>% 
+  group_by(country) %>% 
+  mutate(cumulative_cases=cumsum(cases)) %>% 
+  filter(cumulative_cases>=100) %>% 
+  slice(1) %>% 
+  pull(date, country)
+```
+
+Here we have introduced two new functions `slice` and `pull`
+
+`slice` can be used to select specific rows from a dataset. In this case, we have added a column which is the cumulative number of cases, selected the first row after filtering the dataset to only include results where the value is greater than or equal to 100, and then selected the first row using the slice command.
+
+An additional function is the `pull` command. This is useful when you want to extract specific values from the result.
+
+```{r}
+first_100cases <- northern_africa %>% 
+  group_by(country) %>% 
+  mutate(cumulative_cases=cumsum(cases)) %>% 
+  filter(cumulative_cases>=100) %>% 
+  slice(1) %>% 
+  pull(date, country)
+```
+
+### Using the results in RMarkdown
+
+RStudio has a powerful tool for writing documents called RMarkdown. These slides were written in RMarkdown and there are many resources online built using the same approach.
+
+One major benefit of RMarkdown is that is an excellent tool for reproducible research
+
+[![](images/Screenshot%202021-07-20%20at%2013.29.38.png){width="450"}](https://www.researchgate.net/publication/306538473_Advantages_and_Limits_in_the_Adoption_of_Reproducible_Research_and_R-Tools_for_the_Analysis_of_Omic_Data/figures?lo=1)
+
+RMarkdown will not be covered during this training but there are excellent resources online providing walkthrough guides.
+
+Here is one example:
+
+If we write this text 
+```{r eval=FALSE, echo=TRUE}
+The first COVID-19 case recorded in Northern Africa was in `r first_cases_northern_africa %>% pull(country)` on `r first_cases_northern_africa %>% pull(date)`.
+```
+
+it will work through the functions and this is the result
+
+The first COVID-19 case recorded in Northern Africa was in `r first_cases_northern_africa %>% pull(country)` on `r first_cases_northern_africa %>% pull(date)`.
+
+If you were to re-run the report with data from eastern Africa, the figures will update based on the funcitons you have instructed R to do. This is very helpful when there are multiple people working on a report which needs to be run at regular intervals. 
+
+### Moving averages
+
+The dataset is currently set up so that each row contains information on the number of recorded COVID-19 cases for a specific date for a specified country. One calculation which we may be interested in is the overall trend of case numbers over a period of time. For this, we can calculate cumulative values and averages to identify any trends in the data.
+
+To demonstrate this, we will filter the dataset to only include 1 country - in this case, Morocco.
+
+```{r}
+morocco_covid_cases <- northern_africa %>% 
+  filter(country=="Morocco")
+```
+
+When data are collected on a daily basis, it can be helpful to apply functions to improve the interpretation of trends which may be present in the data. For example, with this COVID dataset, data are available for 489 days between January 1, 2020 & May 3, 2021. There will be some days when 0 cases are reported and there will be some days when many more cases are reported. Some of these differences may be due to delays in reporting cases if ,for example, reporting does not take place at the weekend.
+
+There are a number of functions in the `zoo` package which can help us to partially account for reporting delays.
+
+#### Rolling seven-day average (mean) of cases
+
+```{r}
+pacman::p_load(zoo)
+morocco_covid_cases_mean <- morocco_covid_cases %>% 
+  mutate(cases_7day_mean=rollmean(cases,k=7, fill=NA))
+```
+
+We have now created a new variable which calculates the 7-day moving average of cases. In the visualisation session of this training, we will compare the graphs of cases to the seven-day moving average to show the difference between the two indicators.
+
+If you wanted to calculate a moving average over a longer time period, you can adjust the number after `k=`
+
+```{r}
+morocco_covid_cases_mean <- morocco_covid_cases %>% 
+  mutate(cases_7day_mean=rollmean(cases,k=7, fill=NA)) %>% 
+  mutate(cases_14day_mean=rollmean(cases,k=14,fill=NA))
+```
+
+## Useful resources
+
+[Reproducible research in R](https://monashdatafluency.github.io/r-rep-res/)
