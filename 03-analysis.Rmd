@@ -1,4 +1,11 @@
-# Session 3: Data analysis
+---
+title: 'Session 3: Data analysis'
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, '03-analysis.html'))})
+---
 
 -   Looking at your data
 
@@ -19,6 +26,9 @@ Section from Epidemiologist R handbook- [17 Descriptive Tables](https://epirhand
 There are many functions available to look at descriptive statistics from your dataset. For this example we will use a function that is included in the basic installation of R.
 
 ```{r}
+library(here)
+pacman::p_load(here,dplyr)
+africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
 summary(africa_covid_cases_long)
 ```
 
@@ -188,6 +198,7 @@ The filter can be applied at any point within the calculation. For very complex 
 ```{r}
 northern_africa <- analysis_dataset %>% 
   filter(region=="Northern Africa")
+write.csv(northern_africa, here('data', 'northern_africa.csv'))
 ```
 
 Using filters, we can answer additional questions.
@@ -216,6 +227,9 @@ northern_africa_cases_country <- northern_africa %>%
   mutate(percentage=scales::percent(total_covid_cases/sum(total_covid_cases))) %>% 
   #with this mutate command we are telling r to divide the total number of covid cases for each country by the total number of covid cases for all countries in northern africa
   arrange(-total_covid_cases)  
+
+#Save dataset for later analysis
+write.csv(northern_africa_cases_country, here('data', 'northern_africa_cases_country.csv'))
 ```
 
 ## Additional questions and workflows
@@ -327,6 +341,7 @@ There are a number of functions in the `zoo` package which can help us to partia
 pacman::p_load(zoo)
 morocco_covid_cases_mean <- morocco_covid_cases %>% 
   mutate(cases_7day_mean=rollmean(cases,k=7, fill=NA))
+write.csv(morocco_covid_cases_mean, here('data', 'morocco_covid_cases_mean.csv'))
 ```
 
 We have now created a new variable which calculates the 7-day moving average of cases. In the visualisation session of this training, we will compare the graphs of cases to the seven-day moving average to show the difference between the two indicators.

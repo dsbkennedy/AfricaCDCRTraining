@@ -7,8 +7,6 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, '01-intro.html'))})
 ---
 
-# Session 1: Introduction to R
-
 -   Course structure
 -   Why R?
 -   Installing R
@@ -279,7 +277,7 @@ install.packages("writexl")
 
 ```{r}
 library(writexl)
-write_xlsx(africa_covid_cases, here('data', 'africa_covid_cases_long.xlsx'))
+write_xlsx(africa_covid_cases, here('data', 'africa_covid_cases.xlsx'))
 ```
 
 ## Exercises

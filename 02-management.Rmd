@@ -1,4 +1,11 @@
-# Session 2: Data management
+---
+title: 'Session 2: Data management'
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, '02-management.html'))})
+---
 
 -   Data types
 
@@ -27,6 +34,9 @@ class(number)
 For a more realistic example, we can look at the africa_covid_cases object which has been assigned to the Excel file we used in Session 1. To look at the data type for a whole data frame, we use the function str
 
 ```{r}
+library(readxl)
+library(here)
+africa_covid_cases <- read_xlsx(here('data', 'africa_covid_cases.xlsx'))
 str(africa_covid_cases)
 ```
 
@@ -363,7 +373,7 @@ rm(full_dataset)
 rm(list=ls()[! ls() %in% c("africa_covid_cases_long","merged_data_right_join")])
 #remove all objects except africa_covid_cases_long
 rm(list=setdiff(ls(), "africa_covid_cases_long"))
-
+write.csv(africa_covid_cases_long, here('data', 'africa_covid_cases_long.csv'))
 ```
 
 When using the rm function to remove objects, you are not deleting data from your folders. You are only deleting objects from your RStudio workspace. Make sure the data you are working on is stored in a secure location so that if you accidentally save over the raw data, you can get the data back!
