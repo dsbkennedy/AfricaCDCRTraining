@@ -7,12 +7,30 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, '01-intro.html'))})
 ---
 
+[**Aim**]{.ul}: Provide an introduction to R, RStudio and elementary R concepts
+
+[**Intended Learning Outcomes:**]{.ul}
+
+At the end of the session a successful student will be able to:
+
+-   Discuss the benefits of using R over other software
+    for epidemiological analysis
+
+-   Understand how to install R, RStudio and R packages
+
+-   Use the readxl package to import an Excel dataset to R
+
+## What will be covered today?
+
 -   Course structure
 -   Why R?
 -   Installing R
 -   Setting up files/folders
+-   Navigating in R Studio
 -   R packages
--   Importing data
+-   Objects
+-   Importing and exporting data
+-   Exercises
 -   Useful resources
 
 ## Course structure
@@ -33,23 +51,15 @@ Blog - [Why do we use R rather than Excel?](https://shkspr.mobi/blog/2021/07/why
 
 ## Installing R
 
-For this course, you will need to install 2 items:
+For this course, we will be using RStudio Cloud. This can be accessed here. It is a very helpful tool for teaching R as it does not require any installation of R. It is free to register and you can follow on during the lecture or work through the notes in your own time.
 
-1.  R programming language
-
-2.  R Studio
-
-    -   Integrated Development Environment (IDE)
-
-    -   A very helpful resource for writing and running R code
-
-    You will need to install them in this order - First R, then R studio
+If you would like to install R on your computer this link will be helpful.
 
 [Guide to installing R](https://www.earthdatascience.org/courses/earth-analytics/document-your-science/setup-r-rstudio/)
 
 ## Setting up files and folders
 
-!["Massive Wall of Organized Documents" by Zeusandhera is licensed with CC BY-SA 2.0. To view a copy of this license, visit <https://creativecommons.org/licenses/by-sa/2.0/>](images/messy_files.jpg){width="450"}
+!["Massive Wall of Organized Documents" by Zeusandhera is licensed with CC BY-SA 2.0. To view a copy of this license, visit <https://creativecommons.org/licenses/by-sa/2.0/>](images/messy_files.jpg){width="300"}
 
 ### Best practice
 
@@ -99,7 +109,7 @@ If you want to share your code with colleagues or return to code after several w
 
 RStudio is the most popular option for working with the R programming language. The Epidemiologist R handbook has a section discussing the various windows you will see when you start RStudio : [3.5 RStudio](https://epirhandbook.com/r-basics.html#rstudio)
 
-[![](images/RStudio_overview.PNG){width="500"}](https://epirhandbook.com/r-basics.html#rstudio)
+[![](images/RStudio_overview.PNG){width="600"}](https://epirhandbook.com/r-basics.html#rstudio)
 
 ## R packages
 
