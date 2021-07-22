@@ -35,7 +35,7 @@ At the end of the session a successful student will be able to:
 
 ## Course structure
 
-6 teaching sessions drawing from several resources including the [Epidemiologist R handbook](https://epirhandbook.com/)
+6 teaching sessions drawing from several resources including the [Epidemiologist R handbook](https://epirhandbook.com/){target="_blank"}
 
 -   An excellent resource for all skill/experience levels
 
@@ -45,9 +45,9 @@ At the end of the session a successful student will be able to:
 
 ## Why R?
 
-[![Why Learn R? 10 Handy Reasons to Learn R programming Language](images/reasons_to_learn_R-01.jpg){width="400"}](https://data-flair.training/blogs/why-learn-r/)
+[![Why Learn R? 10 Handy Reasons to Learn R programming Language](images/reasons_to_learn_R-01.jpg){width="400"}](https://data-flair.training/blogs/why-learn-r/){target="_blank"}
 
-Blog - [Why do we use R rather than Excel?](https://shkspr.mobi/blog/2021/07/why-do-we-use-r-rather-than-excel/)
+Blog - [Why do we use R rather than Excel?](https://shkspr.mobi/blog/2021/07/why-do-we-use-r-rather-than-excel/){target="_blank"}
 
 ## Installing R
 
@@ -55,7 +55,7 @@ For this course, we will be using RStudio Cloud. This can be accessed here. It i
 
 If you would like to install R on your computer this link will be helpful.
 
-[Guide to installing R](https://www.earthdatascience.org/courses/earth-analytics/document-your-science/setup-r-rstudio/)
+[Guide to installing R](https://www.earthdatascience.org/courses/earth-analytics/document-your-science/setup-r-rstudio/){target="_blank"}
 
 ## Setting up files and folders
 
@@ -85,9 +85,9 @@ Projects are covered in more detail in the Epidemiologist R handbook: [Chapter 6
 
 If you want to share your code with colleagues or return to code after several weeks/months, you will be grateful that you gave your files and folders meaningful names! Many organisations have style guides to ensure that teams can collaborate on coding projects.
 
--   [Tidyverse style guide](https://style.tidyverse.org/files.html#names)
+-   [Tidyverse style guide](https://style.tidyverse.org/files.html#names){target="_blank"}
 
-[![Tidyverse Style Guide - 1.2 Organisation](images/code_organisation.png){width="800"}](https://style.tidyverse.org/files.html#names)
+[![Tidyverse Style Guide - 1.2 Organisation](images/code_organisation.png){width="800"}](https://style.tidyverse.org/files.html#names){target="_blank"}
 
 -   Key points to remember for naming
 
@@ -107,21 +107,21 @@ If you want to share your code with colleagues or return to code after several w
 
 ## Navigating in R studio
 
-RStudio is the most popular option for working with the R programming language. The Epidemiologist R handbook has a section discussing the various windows you will see when you start RStudio : [3.5 RStudio](https://epirhandbook.com/r-basics.html#rstudio)
+RStudio is the most popular option for working with the R programming language. The Epidemiologist R handbook has a section discussing the various windows you will see when you start RStudio : [3.5 RStudio](https://epirhandbook.com/r-basics.html#rstudio){target="_blank"}
 
-[![](images/RStudio_overview.PNG){width="600"}](https://epirhandbook.com/r-basics.html#rstudio)
+[![](images/RStudio_overview.PNG){width="600"}](https://epirhandbook.com/r-basics.html#rstudio){target="_blank"}
 
 ## R packages
 
 ### What is an R package?
 
-*Definition from the* Epidemiologist R handbook - 3.7 "[Packages](https://epirhandbook.com/r-basics.html#packages)"
+*Definition from the* Epidemiologist R handbook - 3.7 "[Packages](https://epirhandbook.com/r-basics.html#packages){target="_blank"}"
 
 *"An R package is a shareable bundle of code and documentation that contains pre-defined functions. Users in the R community develop packages all the time catered to specific problems, it is likely that one can help with your work! You will install and use hundreds of packages in your use of R."*
 
 Packages can simplify your workflow by combining multiple steps into a smaller number of commands.
 
-Example: [**readxl**](https://readxl.tidyverse.org/) is a package of functions used to import data from Excel to R.
+Example: [**readxl**](https://readxl.tidyverse.org/){target="_blank"} is a package of functions used to import data from Excel to R.
 
 ### Installing a package
 
@@ -135,7 +135,7 @@ The installation has been successful. You do not need to reinstall the packages 
 
 -   In R, red text does not mean there has been an error! It means that R is warning you about something related to the function you have instructed R to apply to the data.
 
-    Epidemiologist R handbook: [Section 3.13 Errors vs. warnings](https://epirhandbook.com/r-basics.html#errors-warnings)
+    Epidemiologist R handbook: [Section 3.13 Errors vs. warnings](https://epirhandbook.com/r-basics.html#errors-warnings){target="_blank"}
 
     You will now be able to see the package in your list of packages.
 
@@ -179,7 +179,7 @@ To read more about a particular package, type
 
 So far we have installed, loaded and used a package (**readxl**). But how do we use the data generated from applying the functions? We assign the information to "objects".
 
-[Section in Epidemiologist for R handbook about Objects](https://epirhandbook.com/r-basics.html#objects)
+[Section in Epidemiologist for R handbook about Objects](https://epirhandbook.com/r-basics.html#objects){target="_blank"}
 
 *"Everything you store in R - datasets, variables, a list of village names, a total population number, even outputs such as graphs - are **objects** which are **assigned a name** and **can be referenced** in later commands."*
 
@@ -304,20 +304,20 @@ write_xlsx(africa_covid_cases, here('data', 'africa_covid_cases.xlsx'))
 
 -   Basics
 
-    -   3: [R Basics](https://epirhandbook.com/r-basics.html)
+    -   3: [R Basics](https://epirhandbook.com/r-basics.html){target="_blank"}
 
-    -   4: [Transition to R](https://epirhandbook.com/transition-to-r.html)
+    -   4: [Transition to R](https://epirhandbook.com/transition-to-r.html){target="_blank"}
 
-    -   5: [Suggested packages](https://epirhandbook.com/suggested-packages-1.html)
+    -   5: [Suggested packages](https://epirhandbook.com/suggested-packages-1.html){target="_blank"}
 
-    -   6: [R projects](https://epirhandbook.com/r-projects.html)
+    -   6: [R projects](https://epirhandbook.com/r-projects.html){target="_blank"}
 
-    -   7: [Import/Export](https://epirhandbook.com/import-and-export.html)
+    -   7: [Import/Export](https://epirhandbook.com/import-and-export.html){target="_blank"}
 
-[R for Data Science](https://r4ds.had.co.nz/)
+[R for Data Science](https://r4ds.had.co.nz/){target="_blank"}
 
-[R for Excel users](https://jules32.github.io/r-for-excel-users/)
+[R for Excel users](https://jules32.github.io/r-for-excel-users/){target="_blank"}
 
-[Awesome R learning resources](https://github.com/iamericfletcher/awesome-r-learning-resources)
+[Awesome R learning resources](https://github.com/iamericfletcher/awesome-r-learning-resources){target="_blank"}
 
-[Getting started with R and RStudio](https://rafalab.github.io/dsbook/getting-started.html)
+[Getting started with R and RStudio](https://rafalab.github.io/dsbook/getting-started.html){target="_blank"}
