@@ -9,7 +9,7 @@ knitr::knit_global("./00-outline.Rmd")
 
 
 rmd_files <- list.files(pattern=".Rmd", recursive=TRUE, full.names=TRUE)
-
+rmd_files
 source_fn <- function(x) {
   source(x, local = knitr::knit_global())
 }
