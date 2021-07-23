@@ -13,8 +13,7 @@ knit: (function(input_file, encoding) {
 
 At the end of the session a successful student will be able to:
 
--   Discuss the benefits of using R over other software
-    for epidemiological analysis
+-   Discuss the benefits of using R over other software for epidemiological analysis
 
 -   Understand how to install R, RStudio and R packages
 
@@ -45,7 +44,7 @@ At the end of the session a successful student will be able to:
 
 ## Why R?
 
-[![Why Learn R? 10 Handy Reasons to Learn R programming Language](images/reasons_to_learn_R-01.jpg){width="400"}](https://data-flair.training/blogs/why-learn-r/){target="_blank"}
+[![Why Learn R? 10 Handy Reasons to Learn R programming Language](images/reasons_to_learn_R-01.jpg){width="400"}](https://data-flair.training/blogs/why-learn-r/)
 
 Blog - [Why do we use R rather than Excel?](https://shkspr.mobi/blog/2021/07/why-do-we-use-r-rather-than-excel/){target="_blank"}
 
@@ -87,7 +86,7 @@ If you want to share your code with colleagues or return to code after several w
 
 -   [Tidyverse style guide](https://style.tidyverse.org/files.html#names){target="_blank"}
 
-[![Tidyverse Style Guide - 1.2 Organisation](images/code_organisation.png){width="800"}](https://style.tidyverse.org/files.html#names){target="_blank"}
+[![Tidyverse Style Guide - 1.2 Organisation](images/code_organisation.png){width="800"}](https://style.tidyverse.org/files.html#names)
 
 -   Key points to remember for naming
 
@@ -109,7 +108,7 @@ If you want to share your code with colleagues or return to code after several w
 
 RStudio is the most popular option for working with the R programming language. The Epidemiologist R handbook has a section discussing the various windows you will see when you start RStudio : [3.5 RStudio](https://epirhandbook.com/r-basics.html#rstudio){target="_blank"}
 
-[![](images/RStudio_overview.PNG){width="600"}](https://epirhandbook.com/r-basics.html#rstudio){target="_blank"}
+[![](images/RStudio_overview.PNG){width="600"}](https://epirhandbook.com/r-basics.html#rstudio)
 
 ## R packages
 
@@ -217,10 +216,10 @@ b
 
 ## Importing data
 
-For this example, we want to import data that is currently stored in an Excel formatted file ".xlsx". So we can use the function *`read_xlsx` f*rom the **readxl** package.
+For this example, we want to import data that is currently stored in an Excel formatted file ".xlsx". So we can use the function *`read_excel`* from the **readxl** package.
 
 ```{r}
-read_xlsx(here('data','AfricaCovid','AfricaCovid.xlsx'))
+read_excel(here('data','AfricaCovid','AfricaCovid.xlsx'))
 ```
 
 But what does this show? And how can we use it?
@@ -229,7 +228,7 @@ But what does this show? And how can we use it?
 
 ![](images/africa_covid_screenshot.png){width="400"}
 
-So when we tell R to use the function `read_xlsx`, it reads the first sheet which is called "ReadMore".It looks like this is a summary sheet with information about when data for each country was last updated. So how do we tell R to read in a different sheet from the Excel file?
+So when we tell R to use the function `read_excel`, it reads the first sheet which is called "ReadMore".It looks like this is a summary sheet with information about when data for each country was last updated. So how do we tell R to read in a different sheet from the Excel file?
 
 *Question - How many confirmed cases of COVID were recorded across Africa in July 2020?*
 
@@ -244,21 +243,21 @@ excel_sheets(here('data','AfricaCovid','AfricaCovid.xlsx'))
 From this list we can see that we want to import data from the sheet "Infected_per_day".
 
 ```{r}
-read_xlsx(here('data','AfricaCovid','AfricaCovid.xlsx'), sheet="Infected_per_day")
+read_excel(here('data','AfricaCovid','AfricaCovid.xlsx'), sheet="Infected_per_day")
 ```
 
 We can see a snapshot of the data from the sheet "Infected_per_day"
 
 ### Assigning data to an object
 
-We have previously used the function `read_xlsx` from the package **readxl** to import data from an Excel spreadsheet.
+We have previously used the function `read_excel` from the package **readxl** to import data from an Excel spreadsheet.
 
 However, we didn't assign this data to an object, so it is not possible to use the data from the import step.
 
 We can assign the data to an object and then conduct further analysis.
 
 ```{r}
-africa_covid_cases <- read_xlsx(here('data','AfricaCovid','AfricaCovid.xlsx'), sheet="Infected_per_day")
+africa_covid_cases <- read_excel(here('data','AfricaCovid','AfricaCovid.xlsx'), sheet="Infected_per_day")
 ```
 
 You will now see the object in the "Environment" section of R Studio.
@@ -292,11 +291,7 @@ write_xlsx(africa_covid_cases, here('data', 'africa_covid_cases.xlsx'))
 
 ## Exercises
 
-1.  Open R, and run the readxl package
-
-    -   *What does the readxl package do?*
-
-2.  Import the  Excel dataset (africa_cdc_covid_cases.xlsx) into R
+Go to the folder "exercises" and open the file "exercise-1.R"
 
 ## Useful resources
 
