@@ -50,7 +50,7 @@ Blog - [Why do we use R rather than Excel?](https://shkspr.mobi/blog/2021/07/why
 
 ## Installing R
 
-For this course, we will be using RStudio Cloud. This can be accessed here. It is a very helpful tool for teaching R as it does not require any installation of R. It is free to register and you can follow on during the lecture or work through the notes in your own time.
+For this course, we will be using RStudio Cloud. This can be accessed [here](https://tinyurl.com/s9y8p55t){target="_blank"}. It is a very helpful tool for teaching R as it does not require any installation of R. It is free to register and you can follow on during the lecture or work through the notes in your own time.
 
 If you would like to install R on your computer this link will be helpful.
 
