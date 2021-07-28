@@ -134,7 +134,7 @@ It allows us to look at a specific variable within the dataset
 unique(africa_covid_cases$AFRICAN_REGION)
 ```
 
-And again we can assign this to an object
+And again we can assign this result to an object.
 
 ```{r}
 region_list <- unique(africa_covid_cases$AFRICAN_REGION)
@@ -390,8 +390,8 @@ We know this is a data set of COVID cases so the date range (from the start of 2
 All of the objects you have created so far will be visible in the top right corner of RStudio. As you proceed through your analysis this can become cluttered making it difficult to ensure you are using the correct dataset for your analysis. To remove individual objects, type `rm(object name)`where object name is the object you want to remove from your workspace.
 
 ```{r}
-#remove object called full_dataset
-rm(full_dataset)
+#remove object called population_data
+rm(population_data)
 #remove all objects except africa_covid_cases_long and merged_data_right_join
 rm(list=ls()[! ls() %in% c("africa_covid_cases_long","merged_data_right_join")])
 #remove all objects except africa_covid_cases_long
