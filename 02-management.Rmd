@@ -7,21 +7,39 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, '02-management.html'))})
 ---
 
+## Aim: 
+
+To outline key concepts and "best practice" for working with data in R
+
+## Intended Learning Outcomes: 
+
+At the end of the session a successful student will be able to:
+
+-   Compare and contrast the different types of data in R
+
+-   Describe the components of "tidy data" and its advantages
+
+-   Discuss the differences between the various types of joins when merging data
+
+## What will be covered today? 
+
 -   Data types
 
 -   Working with data
+
+-   The tidyverse
 
 -   Dates
 
 -   Pivoting and grouping data
 
--   Removing duplicates
+-   Merging datasets
 
--   Best practice in coding
+-   Keeping your workspace clean
 
 ## Data types
 
-A key concept which is helpful to understand when you are learning R is that variables in R can be classified as a number of "types". The various "types" dictate which functions you can apply to your date. For example, if you had a dataset with the names and telephone numbers of all learners on this course, the variable with the name will be a different type to the variable containing the telephone number.
+A key concept that is helpful to understand when you are learning R is that variables in R can be classified as a number of "types". The various "types" dictate which functions you can apply to your date. For example, if you had a dataset with the names and telephone numbers of all learners on this course, the variable with the name will be a different type to the variable containing the telephone number.
 
 ```{r}
 name <- "Dave"
@@ -40,15 +58,15 @@ africa_covid_cases <- read_xlsx(here('data', 'africa_covid_cases.xlsx'))
 str(africa_covid_cases)
 ```
 
-The first 3 columns are of the class "chr" which is short for character. These are often known as "strings". The remaining variables we can see are are of the class "num" which means that R has identified these variables as numbers.
+The first 3 columns are of the class "chr" which is short for character. These are often known as "strings". We can see the remaining variables are of the class "num", which means that R has identified these variables as numbers.
 
-Depending on the data type we can apply different functions. For example, we can get the average of the first numeric column by typing
+Depending on the data type, we can apply different functions. For example, we can get the average of the first numeric column by typing.
 
 ```{r}
 mean(africa_covid_cases$`43831`)
 ```
 
-But we can't get the mean value of the character columns because they do not contain data which has been identified by R as a number.
+However, we cannot get the mean value of the character columns because they do not contain data that has been identified by R as a number.
 
 ```{r}
 mean(africa_covid_cases$ISO)
@@ -76,7 +94,7 @@ AFRICAN_REGION - African region
 
 ### Looking at your data
 
-*Show the first 5 rows of the data frame*
+*Show the first 5 rows of the data frame.*
 
 The function `head` tells R that we want to see the first few rows and `n=` specifies how many rows we want to see.
 
@@ -84,7 +102,7 @@ The function `head` tells R that we want to see the first few rows and `n=` spec
 head(africa_covid_cases, n=5)
 ```
 
-Show the last 7 rows
+*Show the last 7 rows of the data frame.*
 
 ```{r}
 tail(africa_covid_cases, n=7)
@@ -130,7 +148,7 @@ There are thousands of packages with many functions and sometimes these packages
 
 This can be confusing when you are starting to learn R.
 
-There is a collection of packages with many of the most commonly used packages and this is called the [`tidyverse`](https://www.tidyverse.org/).
+There is a collection of packages with many of the most commonly used packages, and this is called the [`tidyverse`](https://www.tidyverse.org/).
 
 ```{r}
 tidyverse::tidyverse_packages()
@@ -146,24 +164,23 @@ The key concept when working with packages from the tidyverse is the concept of 
 
 Principles of "[tidy data](https://r4ds.had.co.nz/tidy-data.html)":
 
-1.  Each variable must have its own column
-2.  Each observation must have its own row
-3.  Each value must have its own cell
+1.  Each variable must have its own column.
+2.  Each observation must have its own row.
+3.  Each value must have its own cell.
 
 Functions from the tidyverse packages are set up to work with tidy data. If your data are not tidy, then you will have to restructure the data to a tidy format. Restructuring can take a lot of time if the data are stored in Excel spreadsheets with a lot of formatting/merged columns.
 
-[![Tidy data for efficiency, reproducibility, and collaboration. By Julie Lowndes and Allison Horst.](images/tidy_messy_data-01.jpg){width="250"}](https://www.openscapes.org/blog/2020/10/12/tidy-data/)
+[![Tidy data for efficiency, reproducibility, and collaboration. By Julie Lowndes and Allison Horst.](images/tidy_messy_data-01.jpg){width="450"}](https://www.openscapes.org/blog/2020/10/12/tidy-data/)
 
 ### Checking if data are tidy
 
-In a previous step, we imported COVID case data from an Excel spreadsheet.\
-But how do we know if the data are "tidy"
+In a previous step, we imported COVID case data from an Excel spreadsheet. But how do we know if the data are "tidy"
 
-Remember there are 3 principles
+Remember there are 3 principles:
 
-1.  Each variable must have its own column
-2.  Each observation must have its own row
-3.  Each value must have its own cell
+1.  Each variable must have its own column.
+2.  Each observation must have its own row.
+3.  Each value must have its own cell.
 
 ```{r}
 head(africa_covid_cases, n=3)
@@ -181,7 +198,13 @@ Remember, first we must install the packages from the tidyverse
 
 ### Tidying data
 
-Now that the `tidyverse` has been installed, we can use the functions from the packages to "tidy" the data.One package which is very helpful for this is called "`tidyr`. Instead of loading individual packages, we can load the core tidyverse packages with one command
+Now that the `tidyverse` has been installed, we can use the functions from the packages to "tidy" the data.
+
+[![](images/tidydata_3.jpg){width="450"}](https://github.com/allisonhorst/stats-illustrations)
+
+[![](images/tidydata_5.jpg){width="450"}](https://github.com/allisonhorst/stats-illustrations)
+
+One package which is very helpful for this is called `tidyr`. Instead of loading individual packages, we can load the core tidyverse packages with one command.
 
 ```{r}
 library(tidyverse)
@@ -236,7 +259,7 @@ This is called a pipe and more information can be found in the Epidemiologist R 
 
 Pipes are used to link together multiple functions that you have instructed R to apply to a data frame. You can add comments to code to show other people (and remind yourself!) why you wrote the code in a particular way. Functions are carried out in the order they are linked to one another using pipes.
 
-The example applies the concept of piping to a recipe for baking a cake
+The example applies the concept of piping to a recipe for baking a cake.
 
 ```{r piping_example, eval=FALSE, echo=TRUE}
 # A fake example of how to bake a cake using piping syntax
@@ -262,7 +285,7 @@ So far we have been working through examples using one dataset which we imported
 
 [![Join types](images/types_of_joins.png){width="450"}](https://docs.trifacta.com/display/DP/Join+Types)
 
-This diagram shows some of the most common types of join you will encounter while working with data. When joining data, you need to tell R which column is in dataset A that can be used to link to dataset B. The type of join depends on what relationship you are trying to achieve.
+This diagram shows some of the most common types of join you will encounter while working with data. When joining data, you need to tell R which column is in dataset A that can link to dataset B. The type of join depends on what relationship you are trying to achieve.
 
 #### Example of a join
 
@@ -296,7 +319,7 @@ merged_data_left_join <- left_join(africa_covid_cases_long,
 str(merged_data_left_join)
 ```
 
-The merge has succesfully joined the COVID data and the population data. We can change the type of join to see how this changes the results.
+The merge has successfully joined the COVID data and the population data. We can change the type of join to see how this changes the results.
 
 ```{r}
 merged_data_inner_join <- inner_join(africa_covid_cases_long, 
@@ -342,7 +365,7 @@ install.packages("janitor")
 library(janitor)
 ```
 
-The package [`janitor`](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html) has many helpful functions for cleaning data
+The package [`janitor`](https://cran.r-project.org/web/packages/janitor/vignettes/janitor.html) has many helpful functions for cleaning data. For example, the function excel_numeric_to_date can be used to convert the Excel dates to a more understandable format.
 
 ```{r}
 africa_covid_cases_long <- africa_covid_cases_long %>% 
@@ -362,7 +385,7 @@ max(africa_covid_cases_long$date_format) #maximum date
 
 We know this is a data set of COVID cases so the date range (from the start of 2020 through to May of 2021) looks to be correct.
 
-## Keeping your workspace clear
+## Keeping your workspace clean
 
 All of the objects you have created so far will be visible in the top right corner of RStudio. As you proceed through your analysis this can become cluttered making it difficult to ensure you are using the correct dataset for your analysis. To remove individual objects, type `rm(object name)`where object name is the object you want to remove from your workspace.
 
@@ -378,6 +401,23 @@ write.csv(africa_covid_cases_long, here('data', 'africa_covid_cases_long.csv'))
 
 When using the rm function to remove objects, you are not deleting data from your folders. You are only deleting objects from your RStudio workspace. Make sure the data you are working on is stored in a secure location so that if you accidentally save over the raw data, you can get the data back!
 
-## Useful resource
+## Useful resources
+
+[Epidemiologist R handbook]{.ul}
+
+-   Basics
+
+    -   3: [R Basics](https://epirhandbook.com/r-basics.html){target="_blank"}
+    -   4: [Transition to R](https://epirhandbook.com/transition-to-r.html){target="_blank"}
+
+-   Data management
+
+    -   12: [Pivoting data](https://epirhandbook.com/pivoting-data.html?q=pivot_long#pivoting-data)
+
+    -   14: [Joining data](https://epirhandbook.com/joining-data.html)
 
 [Data wrangling with dplyr and tidyr](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+[R bootcamp: The tidyverse](https://r-bootcamp.netlify.app/)
+
+[A 'fun' intro to R](https://favstats.github.io/ds3_r_intro/#1)

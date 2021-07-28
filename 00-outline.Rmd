@@ -113,7 +113,7 @@ As this is the first time we have run this course, it is an excellent opportunit
 
 For this training, we want to create an environment where people feel comfortable to ask questions and participate in discussions. We ask all participants to review the code of conduct information recently published by the [useR!2021 conference](https://user2021.r-project.org/participation/coc/){target="_blank"}
 
-If you want to report any action by a fellow participant please contact Dave (david.kennedy\@lshtm.ac.uk) or Hibo (hibo.asad\@phe.gov.uk) and we will support you to resolve the situation.
+If you want to report anything please contact Dave (david.kennedy\@lshtm.ac.uk) or Hibo (hibo.asad\@phe.gov.uk) and we will support you to resolve the situation.
 
 ## Reporting errors or unclear language in the course material
 
