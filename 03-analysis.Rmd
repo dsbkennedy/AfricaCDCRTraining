@@ -7,6 +7,22 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, '03-analysis.html'))})
 ---
 
+## Aim: 
+
+To provide tools for extracting answers from your data.
+
+## Intended Learning Outcomes:
+
+At the end of the session a successful student will be able to:
+
+-   Build an analysis dataset
+
+-   Filter, group and summarise data to answer questions
+
+-   Apply functions to calculate moving averages
+
+## What will be covered today?
+
 -   Looking at your data
 
 -   Building your analysis dataset
@@ -23,10 +39,11 @@ knit: (function(input_file, encoding) {
 
 Section from Epidemiologist R handbook- [17 Descriptive Tables](https://epirhandbook.com/descriptive-tables.html)
 
-There are many functions available to look at descriptive statistics from your dataset. For this example we will use a function that is included in the basic installation of R.
+There are many functions available to look at descriptive statistics from your dataset. For this example, we will use a function that is included in the basic installation of R.
 
 ```{r}
 library(here)
+library(dplyr)
 pacman::p_load(here,dplyr)
 africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
 summary(africa_covid_cases_long)
@@ -40,7 +57,7 @@ For the cases variable, the maximum number of cases recorded on one day was 6,19
 
 ## Building an analysis dataset
 
-Before analysing the data, it is a good idea to generate a new dataset which only contains the variables you need to analyse.
+Before analysing the data, it is good to generate a new dataset that only contains the variables you need to analyse.
 
 So what variables do we have in *`africa_covid_cases_long`*
 
@@ -50,12 +67,17 @@ names(africa_covid_cases_long)
 
 We can select the variables we want to keep using the select function from the dplyr package
 
-`dplyr` is a core part of the `tidyverse` so it is loaded when you write `library(tidyverse)`
+`dplyr` is a core package of the `tidyverse` so it is loaded when you write `library(tidyverse)`
 
 ```{r}
+library(tidyverse) # this will load the dplyr package along with other core tidyverse packages
+library(dplyr) # this will only load the tidyverse
+# you don't need to run both lines! Loading a package twice will not have any negative consequences. But it makes your code less efficient to read!
 analysis_dataset <- africa_covid_cases_long %>% 
   select(date_format,AFRICAN_REGION, COUNTRY_NAME, cases)
 ```
+
+The `select` function from the `dplyr` package is very useful. It is used to tell R which columns you want to keep in the new data frame.
 
 We can look at the first few rows of the dataset we have created to check we have selected the desired variables.
 
@@ -63,9 +85,7 @@ We can look at the first few rows of the dataset we have created to check we hav
 head(analysis_dataset)
 ```
 
-The `select` function from the `dplyr` package is very useful.
-
-It can also be used to rename selected variables
+The select function can also be used to rename selected variables.
 
 ```{r}
 analysis_dataset <- africa_covid_cases_long %>% 
@@ -92,13 +112,7 @@ So far we have:
 
 -   Selected only the variables we want to use for the analysis
 
-Now we can start to use the dataset to answer questions
-
-The `dplyr` package contains many useful functions for analysing data.
-
-Some of these functions are covered in the Epidemiologist R Handbook - [Section 17.4](https://epirhandbook.com/descriptive-tables.html#dplyr-package)
-
-We will use some of these functions to answer questions using our dataset.
+Now we can start to use the dataset to answer questions. The `dplyr` package contains many useful functions for analysing data. Some of these functions are covered in the Epidemiologist R Handbook - [Section 17.4](https://epirhandbook.com/descriptive-tables.html#dplyr-package). We will use some of these functions to answer questions using our dataset.
 
 *How many confirmed cases of COVID-19 have been recorded in Africa?*
 
@@ -110,7 +124,7 @@ analysis_dataset %>%  # Tell R what dataset we want to use
 
 The answer is "NA", which stands for "Not Available"
 
-This is a good example of how R deals with missing data
+This is a good example of how R "sees" missing data
 
 -   There may be dates in our dataset where there were no confirmed cases of COVID-19 recorded
 
@@ -120,7 +134,7 @@ This is a good example of how R deals with missing data
 
 ## Missing data
 
-There are several options for dealing with missing values in R including imputation and other statistical techniques which will not be discussed here. For this section we will discuss the 2 most straightforward options but when building a graph, table or report it is very important to report how missing data were handled. 
+There are several options for dealing with missing values in R, including imputation and other statistical techniques, which will not be discussed here. This section will discuss the two most straightforward options, but it is crucial to report how missing data were handled when building a graph, table or report.
 
 1.  Complete case analysis
 
@@ -144,8 +158,7 @@ This command has now excluded NA values and has provided us with an answer for t
 
 ## Grouping and pivoting data
 
-`group_by` is a very powerful function for summarising data. You can instruct R to recognise specific groups in your data. Functions can then be applied to these groups providing you with additional information. 
-
+`group_by` is a very powerful function for summarising data. You can instruct R to recognise specific groups in your data. Functions can then be applied to these groups providing you with additional information.
 
 *How many confirmed cases of COVID-19 have been recorded in Africa, by region?*
 
@@ -153,17 +166,17 @@ This command has now excluded NA values and has provided us with an answer for t
 total_covid_cases_region <- analysis_dataset %>% 
   group_by(region) %>% 
     summarise(total_covid_cases=sum(cases, na.rm=TRUE))
+total_covid_cases_region
 ```
 
-
-
-The `arrange` function can be used to organise the results. In this case we have instructed R to sort the results by the `total_covid_cases` variable, from highest to lowest value.
+The `arrange` function can be used to sort the results. In this case we have instructed R to sort the results by the `total_covid_cases` variable, from highest to lowest value.
 
 ```{r}
-analysis_dataset %>% 
+total_covid_cases_region_sort <- analysis_dataset %>% 
   group_by(region) %>% 
     summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
   arrange(-total_covid_cases)
+total_covid_cases_region_sort
 ```
 
 We can add multiple variables to `group_by`
@@ -171,10 +184,11 @@ We can add multiple variables to `group_by`
 If we add region and country to the group_by command, sort from highest to lowest, we can see which countries reported the most confirmed COVID-19 cases
 
 ```{r}
-analysis_dataset %>% 
+total_covid_cases_region_country_sort <- analysis_dataset %>% 
   group_by(region, country) %>% 
     summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
   arrange(-total_covid_cases)
+total_covid_cases_region_country_sort
 ```
 
 ## Filtering data
@@ -198,6 +212,7 @@ The filter can be applied at any point within the calculation. For very complex 
 ```{r}
 northern_africa <- analysis_dataset %>% 
   filter(region=="Northern Africa")
+head(northern_africa)
 write.csv(northern_africa, here('data', 'northern_africa.csv'))
 ```
 
@@ -237,9 +252,9 @@ write.csv(northern_africa_cases_country, here('data', 'northern_africa_cases_cou
 ### *When was the first confirmed case of COVID-19 in Northern Africa?*
 
 ```{r}
-first_cases_northern_africa <- northern_africa %>% 
-  filter(cases>0) %>% 
-  filter(date == min(date, na.rm=TRUE)) 
+first_cases_northern_africa <- northern_africa %>% # use the northern_africa data
+  filter(cases>0) %>% #filter to only include rows with a case value of greater than 0
+  filter(date == min(date, na.rm=TRUE))  #keep the row with the minimum (first) date
 first_cases_northern_africa
 ```
 
@@ -271,7 +286,7 @@ first_case_northern_africa_country_exclude_tunisia <- northern_africa %>%
 first_case_northern_africa_country_exclude_tunisia
 ```
 
-On what date, was the 100th case of COVID-19 reported from each country in Northern Africa?
+On what date was the 100th case of COVID-19 reported from each country in Northern Africa?
 
 ```{r}
 first_cases_northern_africa_data <- northern_africa %>% 
@@ -282,7 +297,7 @@ first_cases_northern_africa_data <- northern_africa %>%
   pull(date, country)
 ```
 
-Here we have introduced two new functions `slice` and `pull`
+Here we have introduced two new functions, `slice` and `pull`
 
 `slice` can be used to select specific rows from a dataset. In this case, we have added a column which is the cumulative number of cases, selected the first row after filtering the dataset to only include results where the value is greater than or equal to 100, and then selected the first row using the slice command.
 
@@ -297,19 +312,22 @@ first_100cases <- northern_africa %>%
   pull(date, country)
 ```
 
+The Epidemiologist R Handbook has a thorough section on slicing data: 15.3- [Slicing](https://epirhandbook.com/de-duplication.html?q=slice#slicing)
+
 ### Using the results in RMarkdown
 
 RStudio has a powerful tool for writing documents called RMarkdown. These slides were written in RMarkdown and there are many resources online built using the same approach.
 
-One major benefit of RMarkdown is that is an excellent tool for reproducible research
+One major benefit of RMarkdown is that it is an excellent tool for reproducible research.
 
 [![](images/Screenshot%202021-07-20%20at%2013.29.38.png){width="450"}](https://www.researchgate.net/publication/306538473_Advantages_and_Limits_in_the_Adoption_of_Reproducible_Research_and_R-Tools_for_the_Analysis_of_Omic_Data/figures?lo=1)
 
-RMarkdown will not be covered during this training but there are excellent resources online providing walkthrough guides.
+RMarkdown will not be covered during this training, but there are excellent resources online providing walk through guides and some are included in the useful resources section of this session.
 
 Here is one example:
 
-If we write this text 
+If we write this text
+
 ```{r eval=FALSE, echo=TRUE}
 The first COVID-19 case recorded in Northern Africa was in `r first_cases_northern_africa %>% pull(country)` on `r first_cases_northern_africa %>% pull(date)`.
 ```
@@ -318,42 +336,74 @@ it will work through the functions and this is the result
 
 The first COVID-19 case recorded in Northern Africa was in `r first_cases_northern_africa %>% pull(country)` on `r first_cases_northern_africa %>% pull(date)`.
 
-If you were to re-run the report with data from eastern Africa, the figures will update based on the funcitons you have instructed R to do. This is very helpful when there are multiple people working on a report which needs to be run at regular intervals. 
+If you were to re-run the report with data from eastern Africa, the figures would update using the same functions on the new dataset for eastern Africa. This is very helpful when multiple people work on a report that needs to be run at regular intervals.
 
 ### Moving averages
 
-The dataset is currently set up so that each row contains information on the number of recorded COVID-19 cases for a specific date for a specified country. One calculation which we may be interested in is the overall trend of case numbers over a period of time. For this, we can calculate cumulative values and averages to identify any trends in the data.
+The dataset is currently set up so that each row contains information on the number of recorded COVID-19 cases for a specific date for a specified country. One calculation that we may be interested in is the overall trend of case numbers over time. For this, we can calculate cumulative values and averages to identify any trends in the data.
 
-To demonstrate this, we will filter the dataset to only include 1 country - in this case, Morocco.
+To demonstrate this, we will filter the dataset only to include one country - in this case, Morocco.
 
 ```{r}
 morocco_covid_cases <- northern_africa %>% 
   filter(country=="Morocco")
 ```
 
-When data are collected on a daily basis, it can be helpful to apply functions to improve the interpretation of trends which may be present in the data. For example, with this COVID dataset, data are available for 489 days between January 1, 2020 & May 3, 2021. There will be some days when 0 cases are reported and there will be some days when many more cases are reported. Some of these differences may be due to delays in reporting cases if ,for example, reporting does not take place at the weekend.
+When data are collected daily, it can be helpful to apply functions to improve the interpretation of trends that may be present in the data. For example, with this COVID dataset, data are available for 489 days between January 1, 2020, & May 3, 2021. There will be some days when 0 cases are reported, and there will be some days when many more cases are reported. Some of these differences may be due to delays in reporting cases if, for example, reporting does not take place at the weekend.
 
-There are a number of functions in the `zoo` package which can help us to partially account for reporting delays.
+There are many functions in the `slider` package that can help us partially account for reporting delays. These examples use code from the Epidemiologist R handbook: 22.2 [Calculate with slider](https://epirhandbook.com/moving-averages.html#calculate-with-slider).
 
 #### Rolling seven-day average (mean) of cases
 
 ```{r}
-pacman::p_load(zoo)
+pacman::p_load(slider)
+
 morocco_covid_cases_mean <- morocco_covid_cases %>% 
-  mutate(cases_7day_mean=rollmean(cases,k=7, fill=NA))
+  mutate(                                # create new columns
+    # Using slide_dbl()
+    ###################
+    reg_7day = slide_dbl(
+      cases,                         # calculate on new_cases
+      .f = ~mean(.x, na.rm = T),          # function is sum() with missing values removed
+      .before = 7))                     # window is the ROW and 6 prior ROWS
 write.csv(morocco_covid_cases_mean, here('data', 'morocco_covid_cases_mean.csv'))
 ```
 
 We have now created a new variable which calculates the 7-day moving average of cases. In the visualisation session of this training, we will compare the graphs of cases to the seven-day moving average to show the difference between the two indicators.
 
-If you wanted to calculate a moving average over a longer time period, you can adjust the number after `k=`
+If you wanted to calculate a moving average over a more extended period, you could adjust the number after `k=`
 
 ```{r}
 morocco_covid_cases_mean <- morocco_covid_cases %>% 
-  mutate(cases_7day_mean=rollmean(cases,k=7, fill=NA)) %>% 
-  mutate(cases_14day_mean=rollmean(cases,k=14,fill=NA))
+    mutate(                                # create new columns
+    # Using slide_dbl()
+    ###################
+    cases_7day_mean = slide_dbl(
+      cases,                         # calculate on new_cases
+      .f = ~mean(.x, na.rm = T),          # function is sum() with missing values removed
+      .before = 7),                  # window is the ROW and 6 prior ROWS
+     cases_14day_mean = slide_dbl(
+      cases,                         # calculate on new_cases
+      .f = ~mean(.x, na.rm = T),          # function is sum() with missing values removed
+      .before = 14))                  # window is the ROW and 6 prior ROWS
+
 ```
 
 ## Useful resources
+
+[Epidemiologist R handbook]{.ul}
+
+-   Data Management
+
+    -   15: [De-duplication](https://epirhandbook.com/de-duplication.html)
+
+-   Analysis
+
+    -   17: [Descriptive tables](https://epirhandbook.com/descriptive-tables.html)
+    -   22: [Moving averages](https://epirhandbook.com/moving-averages.html)
+
+-   Reports and dashboards
+
+    -   40: [Reports with R Markdown](https://epirhandbook.com/reports-with-r-markdown.html)
 
 [Reproducible research in R](https://monashdatafluency.github.io/r-rep-res/)
