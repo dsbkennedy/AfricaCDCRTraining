@@ -7,7 +7,7 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, '03-analysis.html'))})
 ---
 
-## Aim: 
+## Aim:
 
 To provide tools for extracting answers from your data.
 
@@ -43,8 +43,7 @@ There are many functions available to look at descriptive statistics from your d
 
 ```{r}
 library(here)
-library(dplyr)
-pacman::p_load(here,dplyr)
+pacman::p_load(here)
 africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
 summary(africa_covid_cases_long)
 ```
@@ -71,10 +70,10 @@ We can select the variables we want to keep using the select function from the d
 
 ```{r}
 library(tidyverse) # this will load the dplyr package along with other core tidyverse packages
-library(dplyr) # this will only load the tidyverse
+library(dplyr) # this will only load the dplyr package
 # you don't need to run both lines! Loading a package twice will not have any negative consequences. But it makes your code less efficient to read!
-analysis_dataset <- africa_covid_cases_long %>% 
-  select(date_format,AFRICAN_REGION, COUNTRY_NAME, cases)
+analysis_dataset <- africa_covid_cases_long %>% #use this dataset
+  select(date_format,AFRICAN_REGION, COUNTRY_NAME, cases) #select the named columns
 ```
 
 The `select` function from the `dplyr` package is very useful. It is used to tell R which columns you want to keep in the new data frame.
@@ -118,7 +117,7 @@ Now we can start to use the dataset to answer questions. The `dplyr` package con
 
 ```{r}
 analysis_dataset %>%  # Tell R what dataset we want to use
-    summarise(total_covid_cases=sum(cases))  #Tell R what function we want to apply to the data
+    summarise(total_covid_cases=sum(cases))  #Tell R you want to sum all cases
 
 ```
 
@@ -150,7 +149,7 @@ full_dataset <- na.omit(analysis_dataset)
 
 ```{r}
 total_covid_cases <- analysis_dataset %>% 
-    summarise(total_covid_cases=sum(cases, na.rm=TRUE))
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) #Tell R you want to sum all cases but remove NA values - values with "missing" data
 total_covid_cases
 ```
 
@@ -164,8 +163,8 @@ This command has now excluded NA values and has provided us with an answer for t
 
 ```{r}
 total_covid_cases_region <- analysis_dataset %>% 
-  group_by(region) %>% 
-    summarise(total_covid_cases=sum(cases, na.rm=TRUE))
+  group_by(region) %>% #use the values in the region column to group the data 
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) #for each region, sum the number of cases
 total_covid_cases_region
 ```
 
@@ -173,7 +172,7 @@ The `arrange` function can be used to sort the results. In this case we have ins
 
 ```{r}
 total_covid_cases_region_sort <- analysis_dataset %>% 
-  group_by(region) %>% 
+  group_by(region) %>% #use the values in the region column to group the data 
     summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
   arrange(-total_covid_cases)
 total_covid_cases_region_sort
@@ -186,8 +185,8 @@ If we add region and country to the group_by command, sort from highest to lowes
 ```{r}
 total_covid_cases_region_country_sort <- analysis_dataset %>% 
   group_by(region, country) %>% 
-    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
-  arrange(-total_covid_cases)
+    summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% #for each region, sum the number of cases
+  arrange(-total_covid_cases) #sort the result from highest to lowest number of cases
 total_covid_cases_region_country_sort
 ```
 
@@ -201,8 +200,8 @@ We can repeat the previous calculation, but then add a filter to only include re
 analysis_dataset %>% 
   group_by(region, country) %>% 
     summarise(total_covid_cases=sum(cases, na.rm=TRUE)) %>% 
-  arrange(-total_covid_cases) %>% 
-  filter(region=="Northern Africa")
+  arrange(-total_covid_cases) %>% #sort the result from highest to lowest number of cases
+  filter(region=="Northern Africa") #filter the result to only include rows where the region is "Northern Africa"
 ```
 
 The filter can be applied at any point within the calculation. For very complex calculations, it is helpful to apply the filter as early as possible. This reduces the number of records before the complex portion of the calculation occurs.
@@ -221,8 +220,8 @@ Using filters, we can answer additional questions.
 What percentage of North Africa's confirmed COVID-19 cases were recorded in each country in North Africa?
 
 ```{r}
-#to convert the calculation to percentage we will need to install an additional package
-#install.packages("scales")
+#to convert the calculation to percentage we will need to install and load an additional package called "scales"
+pacman::p_load(scales)
 
 northern_africa %>% 
   group_by(country) %>% 
