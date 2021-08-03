@@ -90,7 +90,8 @@ The select function can also be used to rename selected variables.
 
 ```{r}
 analysis_dataset <- africa_covid_cases_long %>% 
-  select(date=date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases)
+  select(date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases) %>% 
+  mutate(date=lubridate::ymd(date_format))
 ```
 
 We have renamed `AFRICAN_REGION` and `COUNTRY_NAME` as `region` and `country`.
@@ -133,21 +134,7 @@ This is a good example of how R "sees" missing data
 
 -   If you try to run a calculation on data where there is one or more "NA" values, the results will be "NA".
 
-## Missing data
-
-There are several options for dealing with missing values in R, including imputation and other statistical techniques, which will not be discussed here. This section will discuss the two most straightforward options, but it is crucial to report how missing data were handled when building a graph, table or report.
-
-1.  Complete case analysis
-
-    -   Remove rows with any missing data.
-
-```{r}
-full_dataset <- na.omit(analysis_dataset)
-```
-
-2.  Exclude "NA" values from calculations
-
-    -   Add an additional argument to the function to remove any record with "NA" in the variable "cases".
+One option for dealing with missing values in R is to exclude "NA" values from calculations. To do this we, can add an additional argument to the function to remove any record with "NA" in the variable "cases".
 
 ```{r}
 total_covid_cases <- analysis_dataset %>% 
@@ -214,7 +201,7 @@ The filter can be applied at any point within the calculation. For very complex 
 northern_africa <- analysis_dataset %>% 
   filter(region=="Northern Africa")
 head(northern_africa)
-write.csv(northern_africa, here('data', 'northern_africa.csv'))
+
 ```
 
 Using filters, we can answer additional questions.
@@ -232,104 +219,7 @@ northern_africa_cases_country <- northern_africa %>%
   #with this mutate command we are telling r to divide the total number of covid cases for each country by the total number of covid cases for all countries in northern africa
   arrange(-total_covid_cases)  
 northern_africa_cases_country
-#Save dataset for later analysis
-write.csv(northern_africa_cases_country, here('data', 'northern_africa_cases_country.csv'))
 
-```
-
-## Presenting your results in a table
-
-The `gt` package provides a very flexible interface for building tables from your data.
-
-```{r}
-pacman::p_load(gt,here,dplyr)
-```
-
-The documentation describing the functions can be found [here](https://gt.rstudio.com/articles/case-study-gtcars.html). Below is an example using the dataset of COVID-19 cases in Northern Africa.
-
-```{r}
-northern_africa_cases_country <- read.csv(here('data', 'northern_africa_cases_country.csv'))
-northern_africa_cases_country_table <- northern_africa_cases_country %>% 
-  select(-X) %>% 
-  gt() %>% 
-   tab_header(
-    title = md("COVID-19 in Northern Africa")
-  ) %>% 
-  cols_label(
-    country = "Country",
-    total_covid_cases = "Count",
-    percentage = "% of total cases in Northern Africa"
-  ) %>% 
-    tab_spanner(
-    label = "Confirmed cases",
-    columns = c(total_covid_cases,percentage)
-  ) %>% 
-    fmt_number(
-    columns = total_covid_cases,
-    decimals=0,
-    use_seps = TRUE
-  ) %>% 
-   cols_align(
-    align = "center",
-    columns = c(total_covid_cases, percentage)
-  ) 
-northern_africa_cases_country_table
-```
-
-`gt` has many options for customising tables. To demonstrate this, we will build a table to show when each country in Africa recorded its first COVID-19 case. This example uses some of the techniques demonstrated in [this article](https://www.liamdbailey.com/post/making-beautiful-tables-with-gt/).
-
-```{r}
-africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
-
-first_cases_africa <- africa_covid_cases_long %>% 
-  select(date=date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases) %>% 
-  group_by(region,country) %>% 
-  filter(cases>0) %>% 
-  filter(date == min(date, na.rm=TRUE)) %>% 
-  ungroup()
-
-first_cases_africa_table <- first_cases_africa %>% 
-  select(region,country,date) %>% 
-  group_by(region) %>% 
-  arrange(date) %>% 
-gt() %>% 
-  tab_header(
-    title = md("When did countries in Africa record their first case of COVID-19?")
-  ) %>% 
-  fmt_date(
-    columns = date,
-    date_style = 4
-  ) %>% 
-  opt_all_caps() %>% 
-  #Use the Chivo font
-  #Note the great 'google_font' function in 'gt' that removes the need to pre-load fonts
-  opt_table_font(
-    font = list(
-      google_font("Chivo"),
-      default_fonts()
-    )
-  ) %>%
-  cols_label(
-    country = "Country",
-    date = "Date"
-  )  %>% 
-  cols_align(
-    align = "center",
-    columns = c(country, date)
-  ) %>% 
-  tab_options(
-    column_labels.border.top.width = px(3),
-    column_labels.border.top.color = "transparent",
-    table.border.top.color = "transparent",
-    table.border.bottom.color = "transparent",
-    data_row.padding = px(3),
-    source_notes.font.size = 12,
-    heading.align = "left",
-    #Adjust grouped rows to make them stand out
-    row_group.background.color = "grey") %>% 
-  tab_source_note(source_note = "Data: Compiled from national governments and WHO by Humanitarian Emergency Response Africa (HERA)")
-
-first_cases_africa_table
 ```
 
 ## Visualising data using ggplot
@@ -355,9 +245,6 @@ These sections contain very helpful explanations of many of the functions availa
 Firstly, we will produce epicurves to describe the distribution of COVID-19 cases (y axis) over time (x axis). Make a graph of confirmed COVID-19 cases in Northern Africa. The Epidemiologist R handbook has a very useful section on this topic - 32.3 [Epicurves with ggplot](https://epirhandbook.com/epidemic-curves.html#epicurves-with-ggplot2)
 
 ```{r}
-northern_africa <- read.csv(here('data', 'northern_africa.csv')) %>% 
-  mutate(date=lubridate::ymd(date))
-
 ggplot(northern_africa, aes(x=date,y=cases)) +
   geom_line()
 ```
@@ -672,3 +559,100 @@ moroocco_covid_cases_graph
 ```
 
 This chart shows the total number of COVID-19 cases for each day in Morocco between January 1, 2020 and May 3, 2021. The red bars show the reported case numbers for each day while the black line show the 7-day average of cases. We can see that there are several dates with substantially higher numbers of cases compared to the neighbouring dates. This could be due to increased testing on specific days but it is more likely due to delays in reporting leading to a backlog of cases reported on specific days. The black line "smooths" out these differences, allowing us to see the overall trend.
+
+### Presenting your results in a table
+
+The `gt` package provides a very flexible interface for building tables from your data.
+
+```{r}
+pacman::p_load(gt,here,dplyr)
+```
+
+The documentation describing the functions can be found [here](https://gt.rstudio.com/articles/case-study-gtcars.html). Below is an example using the dataset of COVID-19 cases in Northern Africa.
+
+```{r}
+northern_africa_cases_country <- read.csv(here('data', 'northern_africa_cases_country.csv'))
+northern_africa_cases_country_table <- northern_africa_cases_country %>% 
+  select(-X) %>% 
+  gt() %>% 
+   tab_header(
+    title = md("COVID-19 in Northern Africa")
+  ) %>% 
+  cols_label(
+    country = "Country",
+    total_covid_cases = "Count",
+    percentage = "% of total cases in Northern Africa"
+  ) %>% 
+    tab_spanner(
+    label = "Confirmed cases",
+    columns = c(total_covid_cases,percentage)
+  ) %>% 
+    fmt_number(
+    columns = total_covid_cases,
+    decimals=0,
+    use_seps = TRUE
+  ) %>% 
+   cols_align(
+    align = "center",
+    columns = c(total_covid_cases, percentage)
+  ) 
+northern_africa_cases_country_table
+```
+
+`gt` has many options for customising tables. To demonstrate this, we will build a table to show when each country in Africa recorded its first COVID-19 case. This example uses some of the techniques demonstrated in [this article](https://www.liamdbailey.com/post/making-beautiful-tables-with-gt/).
+
+```{r}
+africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
+
+first_cases_africa <- africa_covid_cases_long %>% 
+  select(date=date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases) %>% 
+  group_by(region,country) %>% 
+  filter(cases>0) %>% 
+  filter(date == min(date, na.rm=TRUE)) %>% 
+  ungroup()
+
+first_cases_africa_table <- first_cases_africa %>% 
+  select(region,country,date) %>% 
+  group_by(region) %>% 
+  arrange(date) %>% 
+gt() %>% 
+  tab_header(
+    title = md("When did countries in Africa record their first case of COVID-19?")
+  ) %>% 
+  fmt_date(
+    columns = date,
+    date_style = 4
+  ) %>% 
+  opt_all_caps() %>% 
+  #Use the Chivo font
+  #Note the great 'google_font' function in 'gt' that removes the need to pre-load fonts
+  opt_table_font(
+    font = list(
+      google_font("Chivo"),
+      default_fonts()
+    )
+  ) %>%
+  cols_label(
+    country = "Country",
+    date = "Date"
+  )  %>% 
+  cols_align(
+    align = "center",
+    columns = c(country, date)
+  ) %>% 
+  tab_options(
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    heading.align = "left",
+    #Adjust grouped rows to make them stand out
+    row_group.background.color = "grey") %>% 
+  tab_source_note(source_note = "Data: Compiled from national governments and WHO by Humanitarian Emergency Response Africa (HERA)")
+
+first_cases_africa_table
+```
+
+## 
