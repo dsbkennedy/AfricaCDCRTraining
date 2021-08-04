@@ -1,7 +1,8 @@
 source("scripts/viewerpane_html.R")
-viewerpane_html("01-intro.html")
+viewerpane_html("docs/01-intro.html")
 knitr::purl("01-intro.Rmd", "scripts/01-intro.R")
 knitr::purl("02-management.Rmd", "scripts/02-management.R")
+knitr::purl("03-analysis-visualisation.Rmd", "scripts/03-analysis-visualisation.R")
 knitr::purl("03-analysis.Rmd", "scripts/03-analysis.R")
 knitr::purl("04-visualisation.Rmd", "scripts/04-visualisation.R")
 
