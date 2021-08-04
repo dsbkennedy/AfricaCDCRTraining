@@ -1,5 +1,5 @@
 ---
-title: 'Session 3: Data analysis'
+title: 'Session 3: Data analysis and visualization'
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
@@ -124,9 +124,7 @@ analysis_dataset %>%  # Tell R what dataset we want to use
 
 ```
 
-The answer is "NA", which stands for "Not Available"
-
-This is a good example of how R "sees" missing data
+The answer is "NA", which stands for "Not Available". This is a good example of how R "sees" missing data
 
 -   There may be dates in our dataset where there were no confirmed cases of COVID-19 recorded.
 
@@ -142,7 +140,7 @@ total_covid_cases <- analysis_dataset %>%
 total_covid_cases
 ```
 
-This command has now excluded NA values and has provided us with an answer for the number of confirmed COVID-19 cases in Africa - `r total_covid_cases`
+This command has now excluded NA values and has provided us with an answer for the number of confirmed COVID-19 cases in Africa - `r total_covid_cases`.
 
 ## Grouping and pivoting data
 
