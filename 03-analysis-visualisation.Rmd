@@ -537,9 +537,6 @@ Due to the structure of code using ggplot these principles can be followed to en
 In a previous section, we added indicators for the rolling average and rolling sum of cases. These indicators can be helpful for identifying trends over time.
 
 ```{r}
-# morocco_covid_cases_mean <- read.csv(here('data', 'morocco_covid_cases_mean.csv')) %>% 
-#   select(-X) %>% 
-#   mutate(date=lubridate::ymd(date))
 
 moroocco_covid_cases_graph <- morocco_covid_cases_mean %>% 
   ggplot() +
@@ -569,9 +566,7 @@ pacman::p_load(gt,here,dplyr)
 The documentation describing the functions can be found [here](https://gt.rstudio.com/articles/case-study-gtcars.html). Below is an example using the dataset of COVID-19 cases in Northern Africa.
 
 ```{r}
-northern_africa_cases_country <- read.csv(here('data', 'northern_africa_cases_country.csv'))
 northern_africa_cases_country_table <- northern_africa_cases_country %>% 
-  select(-X) %>% 
   gt() %>% 
    tab_header(
     title = md("COVID-19 in Northern Africa")
@@ -600,8 +595,6 @@ northern_africa_cases_country_table
 `gt` has many options for customising tables. To demonstrate this, we will build a table to show when each country in Africa recorded its first COVID-19 case. This example uses some of the techniques demonstrated in [this article](https://www.liamdbailey.com/post/making-beautiful-tables-with-gt/).
 
 ```{r}
-africa_covid_cases_long <- read.csv(here('data', 'africa_covid_cases_long.csv'))
-
 first_cases_africa <- africa_covid_cases_long %>% 
   select(date=date_format,region=AFRICAN_REGION, country=COUNTRY_NAME, cases) %>% 
   group_by(region,country) %>% 
