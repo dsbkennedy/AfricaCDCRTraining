@@ -21,16 +21,17 @@ At the end of the session a successful student will be able to:
 
 ## What will be covered today?
 
--   Course structure
--   Why R?
--   Installing R
--   Setting up files/folders
--   Navigating in R Studio
--   R packages
--   Objects
--   Importing and exporting data
--   Exercises
--   Useful resources
+-   [Course structure]
+-   [Why R?]
+-   [Installing R]
+-   [Setting up files and folders]
+-   [Navigating in R Studio]
+-   [R packages]
+-   [Objects]
+-   [Importing data]
+-   [Exporting data]
+-   [Exercises]
+-   [Useful resources]
 
 ## Course structure
 

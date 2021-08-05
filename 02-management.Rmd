@@ -23,19 +23,17 @@ At the end of the session a successful student will be able to:
 
 ## What will be covered today?
 
--   Data types
+-   [Data types]
 
--   Working with data
+-   [Working with data]
 
--   The tidyverse
+-   [The tidyverse]
 
--   Dates
+-   [Working with dates]
 
--   Pivoting and grouping data
+-   [Keeping your workspace clean]
 
--   Merging datasets
-
--   Keeping your workspace clean
+-   [Useful resources]
 
 ## Data types
 

@@ -25,25 +25,17 @@ At the end of the session a successful student will be able to:
 
 ## What will be covered today?
 
--   Looking at your data
+-   [Looking at your data]
 
--   Building your analysis dataset
+-   [Building an analysis dataset]
 
--   Answering questions with data
+-   [Answering questions with data]
 
--   Missing data
+-   [Visualising data using ggplot]
 
--   Grouping and pivoting data
+-   [Useful resources]
 
--   Filtering data
-
--   Presenting your results in a table
-
--   Visualising data using ggplot
-
--   Useful resources
-
--   Additional questions and workflows
+-   [Additional questions and workflows]
 
 ## Looking at your data
 
@@ -469,7 +461,6 @@ morocco_covid_cases_mean <- morocco_covid_cases %>%
       cases,                         # calculate on new_cases
       .f = ~mean(.x, na.rm = T),          # function is sum() with missing values removed
       .before = 7))                     # window is the ROW and 6 prior ROWS
-write.csv(morocco_covid_cases_mean, here('data', 'morocco_covid_cases_mean.csv'))
 ```
 
 We have now created a new variable which calculates the 7-day moving average of cases. In the visualisation session of this training, we will compare the graphs of cases to the seven-day moving average to show the difference between the two indicators.
