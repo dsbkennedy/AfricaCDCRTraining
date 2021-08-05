@@ -1,11 +1,4 @@
----
-title: 'Session 1: Introduction to R'
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, '01-intro.html'))})
----
+# Session 1: Introduction to R
 
 [**Aim**]{.ul}: Provide an introduction to R, RStudio and elementary R concepts
 

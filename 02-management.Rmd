@@ -1,17 +1,8 @@
----
-title: 'Session 2: Data management'
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, '02-management.html'))})
----
+# Session 2: Data management
 
-## Aim:
+[**Aim:**]{.ul} To outline key concepts and "best practice" for working with data in R
 
-To outline key concepts and "best practice" for working with data in R
-
-## Intended Learning Outcomes:
+[**Intended Learning Outcomes:**]{.ul}
 
 At the end of the session a successful student will be able to:
 

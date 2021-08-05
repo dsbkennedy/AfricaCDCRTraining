@@ -1,17 +1,8 @@
----
-title: 'Session 3: Data analysis and visualization'
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, '03-analysis-visualisation.html'))})
----
+# Session 3: Data analysis and visualization
 
-## Aim:
+[Aim:]{.ul} To provide tools for extracting answers from your data.
 
-To provide tools for extracting answers from your data.
-
-## Intended Learning Outcomes:
+[**Intended Learning Outcomes:**]{.ul}
 
 At the end of the session a successful student will be able to:
 
@@ -134,7 +125,7 @@ total_covid_cases
 
 This command has now excluded NA values and has provided us with an answer for the number of confirmed COVID-19 cases in Africa - `r total_covid_cases`.
 
-## Grouping and pivoting data
+### Grouping and pivoting data
 
 `group_by` is a very powerful function for summarising data. You can instruct R to recognise specific groups in your data. Functions can then be applied to these groups providing you with additional information.
 
@@ -169,7 +160,7 @@ total_covid_cases_region_country_sort <- analysis_dataset %>%
 total_covid_cases_region_country_sort
 ```
 
-## Filtering data
+### Filtering data
 
 Another useful function is `filter` which can be used to apply filters to calculations.
 
@@ -636,5 +627,3 @@ gt() %>%
 
 first_cases_africa_table
 ```
-
-## 
