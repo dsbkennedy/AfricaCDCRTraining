@@ -1,0 +1,120 @@
+---
+title: 'Module outline'
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, '00_outline.html'))})
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This course aims to teach some of the key concepts to help learners use R as a tool to inform data-driven decision-making for epidemiological analysis.
+
+Many of the examples in this course are from the [Epidemiologist R handbook](https://epirhandbook.com/index.html), a resource developed by epidemiologists working across the world. The handbook is in invaluable resource for all levels of R users but the focus for this course will be on the early learning concepts most frequently used by epidemiologists. The mapping content has been provided by the [afrimapr](https://afrimapr.github.io/afrimapr.website/) project.
+
+The course has been designed in collaboration with colleagues at Africa CDC to ensure the topics covered could be implemented in the participants daily/weekly workflows. The data used during this course is from [HERA](https://hera-ngo.org/) and includes confirmed cases notifications for COVID-19 from 53 countries in Africa.
+
+## Schedule
+
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| **Date**              | **Time**                                                                          | **Session**                            |
++=======================+===================================================================================+========================================+
+| Friday 23rd July      | 1600-1800 (ADDIS ABABA)                                                           | Sesson 1: Intro to R                   |
+|                       |                                                                                   |                                        |
+|                       | 1400-1600 (LONDON)                                                                | -   Course structure                   |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Pre-course questionnaire (10 minutes)*                                       | -   Why R?                             |
+|                       |                                                                                   |                                        |
+|                       | 2.  *Lecture and live coding (1 hour 50 minutes)*                                 | -   Installing R                       |
+|                       |                                                                                   |                                        |
+|                       | 3.  *Go through exercise 1, to be completed before the next session (10 minutes)* | -   Setting up files/folders           |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   R packages                         |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Objects                            |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Importing data                     |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Useful resources                   |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| Wednesday 28th July   | 1700-1900 (ADDIS ABABA)                                                           | Session 2: Data management             |
+|                       |                                                                                   |                                        |
+|                       | 1500-1700 (LONDON)                                                                | -   Data types                         |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Go through exercise 1 answers (15 minutes)*                                  | -   Dates                              |
+|                       | 2.  *Lecture and live coding (1 hour 35 minutes)*                                 |                                        |
+|                       | 3.  *Go through exercise 2, to be completed before the next session (10 minutes)* | -   Working with data                  |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   The tidyverse                      |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Best practice in coding            |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| Friday 30th July      | 1600-1800 (ADDIS ABABA)                                                           | Session 3: Analysing data              |
+|                       |                                                                                   |                                        |
+|                       | 1400-1600 (LONDON)                                                                | -   Looking at your data               |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Go through exercise 2 answers (15 minutes)*                                  | -   Building an analysis dataset       |
+|                       | 2.  *Lecture and live coding (1 hour 35 minutes)*                                 |                                        |
+|                       | 3.  *Go through exercise 3, to be completed before the next session (10 minutes)* | -   Answering questions with data      |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Missing data                       |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Grouping & pivoting data           |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Filtering data                     |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| Wednesday 4th August  | 1700-1900 (ADDIS ABABA)                                                           | Session 4: Visualising data            |
+|                       |                                                                                   |                                        |
+|                       | 1500-1700 (LONDON)                                                                | 1.  Presenting results in a table      |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | 2.  ggplot                             |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Go through exercise 3 answers (15 minutes)*                                  |     a.  Introduction                   |
+|                       |                                                                                   |                                        |
+|                       | 2.  *Lecture and live coding (1 hour 35 minutes)*                                 |     b.  Types of graph                 |
+|                       |                                                                                   |                                        |
+|                       | 3.  *Go through exercise 4, to be completed before the next session (10 minutes)* |     c.  Customising graphs             |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   |     d.  Multiple plots                 |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| Friday 6th August     | 1600-1800 (ADDIS ABABA)                                                           | Session 5: Mapping data                |
+|                       |                                                                                   |                                        |
+|                       | 1400-1600 (LONDON)                                                                | -   Key terms                          |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Go through exercise 4 answers (15 minutes)*                                  | -   Key concepts                       |
+|                       | 2.  *Lecture and live coding (1 hour 55 minutes)*                                 |                                        |
+|                       |                                                                                   | -   Building a map                     |
+|                       |                                                                                   |                                        |
+|                       |                                                                                   | -   Saving a map                       |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+| Wednesday 11th August | 1700-1900 (ADDIS ABABA)                                                           | Session 6: Review of previous sessions |
+|                       |                                                                                   |                                        |
+|                       | 1500-1700 (LONDON)                                                                | Course evaluation                      |
+|                       |                                                                                   |                                        |
+|                       | 1.  *Review course content (1 hour 30 minutes)*                                   |                                        |
+|                       |                                                                                   |                                        |
+|                       | 2.  *Course evaluation (30 minutes)*                                              |                                        |
++-----------------------+-----------------------------------------------------------------------------------+----------------------------------------+
+
+## Assessment
+
+Throughout the course, there will be exercises for you to complete. Some of the exercises will be completed during the sessions, while additional exercises will be completed in your own time. These exercises aim to check your understanding, identify any areas that require further teaching and help you apply the skills you have learned to different datasets. At the start and end of every session, there will be time for you to ask questions. You can also enter questions into the chat box during the training.
+
+## Evaluation
+
+As this is the first time we have run this course, it is an excellent opportunity for us to understand what went well and what can be improved for future training sessions. There will be pre and post-course questionnaires delivered through the KoboTools platform. More information will be provided during the course, but we encourage all attendees to complete the questionnaires with honest feedback.
+
+## Code of conduct
+
+For this training, we want to create an environment where people feel comfortable to ask questions and participate in discussions. We ask all participants to review the code of conduct information recently published by the [useR!2021 conference](https://user2021.r-project.org/participation/coc/){target="_blank"}
+
+If you want to report anything please contact Dave (david.kennedy\@lshtm.ac.uk) or Hibo (hibo.asad\@phe.gov.uk) and we will support you to resolve the situation.
+
+## Reporting errors or unclear language in the course material
+
+If you notice any errors or unclear information in the training material, please contact Dave (david.kennedy\@lshtm.ac.uk) or Hibo (hibo.asad\@phe.gov.uk). We have tried to avoid using "jargon", and where new terms or concepts are being introduced, we have used everyday language to explain the concept. However, sometimes this may not be possible, so it would be very helpful to get your feedback to update the course.
